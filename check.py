@@ -4,23 +4,28 @@ from ipprocessor import IPProcessor
 
 def main():
     try:
-        inputs = sys.argv[1]
+        nargs = len(sys.argv)
+        if nargs == 2:
+            inputs = sys.argv[1]
+        if nargs == 1:
+            print("No input file specified. Doing a default lookup on 8.8.8.8")
+            inputs = "8.8.8.8"
+
     except IndexError:
         print('Usage: main.py <ip_address>')
         sys.exit(1)    
 
     ip_address = get_ips(inputs)
-    
     info = IPProcessor(token_file_name='access_token', ip=ip_address)
-    info.get_details()
+    ip_data = info.get_details()
 
 def get_ips(inputs) -> list[str]:
     if inputs.endswith(".txt"):
         with open(inputs, 'r') as f:
             ip_address = f.readlines()
-            print(f"Found {len(ip_address)} IP addresses")
     else:
         ip_address = [inputs]
+
     ip_address = [ip.strip() for ip in ip_address]
     return ip_address
 

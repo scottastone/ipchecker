@@ -3,13 +3,15 @@ import ipinfo
 import sys
 import pprint
 
-class IPProcessor:
+class IPProcessor():
     def __init__(self, ip, token_file_name: str='access_token'):
         self.token_file_name = token_file_name
         self._load_access_token()
         self.handler = ipinfo.getHandler(access_token=self.access_token)
         self.ip = ip
         self.pprinter = pprint.PrettyPrinter()
+
+        self._check_and_strip_ip()
     
     def _load_access_token(self):
         try:
@@ -21,7 +23,6 @@ class IPProcessor:
 
     def _check_and_strip_ip(self):
         self.ip = [ip.split(':')[0] for ip in self.ip]
-
         for ip in self.ip:
             if ip.count('.') != 3:
                 print(f'Invalid IP address: {self.ip}')
@@ -33,8 +34,10 @@ class IPProcessor:
                     sys.exit(1)
         
     def get_details(self):
-        self._check_and_strip_ip()
         if len(self.ip) > 1:
-            self.pprinter.pprint(self.handler.getBatchDetails(self.ip))
+            ip_data = self.handler.getBatchDetails(self.ip)
         elif len(self.ip) == 1: 
-            self.pprinter.pprint(self.handler.getDetails(self.ip[0]).all)
+            ip_data = self.handler.getDetails(self.ip[0]).all
+        
+        self.pprinter.pprint(ip_data)
+        return ip_data
