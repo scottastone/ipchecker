@@ -3,7 +3,7 @@ import ipinfo
 import sys
 import pprint
 
-class IPProcessor():
+class IPLookup():
     def __init__(self, ip, token_file_name: str='access_token'):
         self.token_file_name = token_file_name
         self._load_access_token()
@@ -33,7 +33,7 @@ class IPProcessor():
                     print(f'Invalid IP address: {self.ip}')
                     sys.exit(1)
         
-    def get_details(self):
+    def lookup(self):
         if len(self.ip) > 1:
             ip_data = self.handler.getBatchDetails(self.ip)
         elif len(self.ip) == 1: 

@@ -1,6 +1,6 @@
 # Copyright Scott Stone (c) 2022
 import sys
-from ipprocessor import IPProcessor
+from iplookup import IPLookup
 
 def main():
     try:
@@ -12,16 +12,17 @@ def main():
             inputs = "8.8.8.8"
 
     except IndexError:
-        print('Usage: main.py <ip_address>')
-        sys.exit(1)    
+        print("Usage: check.py <ip_address> or check.py <ip_file.txt>")
+        sys.exit(1)
 
     ip_address = get_ips(inputs)
-    info = IPProcessor(token_file_name='access_token', ip=ip_address)
-    ip_data = info.get_details()
+    info = IPLookup(token_file_name="./access_token", ip=ip_address)
+    ip_data = info.lookup()
+
 
 def get_ips(inputs) -> list[str]:
     if inputs.endswith(".txt"):
-        with open(inputs, 'r') as f:
+        with open(inputs, "r") as f:
             ip_address = f.readlines()
     else:
         ip_address = [inputs]
@@ -29,5 +30,6 @@ def get_ips(inputs) -> list[str]:
     ip_address = [ip.strip() for ip in ip_address]
     return ip_address
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
