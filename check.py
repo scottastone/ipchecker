@@ -2,7 +2,7 @@
 import sys
 from iplookup import IPLookup
 
-def main():
+def main() -> None:
     try:
         nargs = len(sys.argv)
         if nargs == 2:
@@ -20,7 +20,15 @@ def main():
     ip_data = info.lookup()
 
 
-def get_ips(inputs) -> list[str]:
+def get_ips(inputs: str) -> list[str]:
+    """Get the IPs in the file or the single IP address"""
+
+    Args:
+        inputs (str): The file name or IP address
+
+    Returns:
+        list[str]: list of the fomatted IP addresses
+    """
     if inputs.endswith(".txt"):
         with open(inputs, "r") as f:
             ip_address = f.readlines()
